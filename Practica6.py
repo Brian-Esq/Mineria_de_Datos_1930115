@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
-import numbers
+import numpy as np
+from scipy.stats import spearmanr
+from scipy.stats import pearsonr
 import pandas as pd
-from tabulate import tabulate
 
 # Regresión lineal para el consumo total de agua por alcaldía registrada con un código
 df = pd.read_csv("P2ConsumoAgua2019.csv")
@@ -27,6 +28,15 @@ plt.tight_layout()
 plt.close()
 print(df_mean)  # Revisar esta impresión en consola para ver qué código pertenece a qué alcaldía
 
+# Coefciente de correlación Spearman
+predicciones = modelo.predict(sm.add_constant(X))
+spearman, p_valor = spearmanr(predicciones, Y)
+print("Coeficiente de correlación de Spearman:", spearman)
+print("Valor p:", p_valor)
+# Coeficiente de correlación Pearson
+coeficiente_pearson, p_value = pearsonr(predicciones, Y)
+print("Coeficiente de correlación de Pearson:", coeficiente_pearson)
+print("Valor p:", p_value)
 
 # Regresión lineal para el consumo total de agua por índice y bimestre clasificados por un código
 df_ind = df.groupby(['bimestre', 'indice_des'])['consumo_total'].mean().reset_index()
@@ -49,6 +59,15 @@ plt.savefig("LinearRegressionP6/RegresionPorIndBim.png")
 plt.tight_layout()
 plt.close()
 print(df_ind)   # Revisar esta impresión en consola para ver qué código pertenece a qué índice en cuál bimestre
+# Coeficiente de correlación Spearman
+predicciones2 = model.predict(sm.add_constant(X2))
+spearman2, p_valor2 = spearmanr(predicciones2, Y2)
+print("Coeficiente de correlación de Spearman:", spearman2)
+print("Valor p:", p_valor2)
+# Coeficiente de correlación Pearson
+coeficiente_pearson2, p_value2 = pearsonr(predicciones2, Y2)
+print("Coeficiente de correlación de Pearson:", coeficiente_pearson2)
+print("Valor p:", p_value2)
 
 # Minería de Datos
 # Brian Esquivel
