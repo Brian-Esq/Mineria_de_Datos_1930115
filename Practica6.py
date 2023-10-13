@@ -27,7 +27,6 @@ plt.savefig("LinearRegressionP6/RegresionPorAlcaldia.png")
 plt.tight_layout()
 plt.close()
 print(df_mean)  # Revisar esta impresión en consola para ver qué código pertenece a qué alcaldía
-
 # Coefciente de correlación Spearman
 predicciones = modelo.predict(sm.add_constant(X))
 spearman, p_valor = spearmanr(predicciones, Y)
@@ -37,6 +36,43 @@ print("Valor p:", p_valor)
 coeficiente_pearson, p_value = pearsonr(predicciones, Y)
 print("Coeficiente de correlación de Pearson:", coeficiente_pearson)
 print("Valor p:", p_value)
+
+# Regresión lineal para el consumo total de agua por alcaldía y bimestre registrada con un código
+df = pd.read_csv("P2ConsumoAgua2019.csv")
+df_mean = df.groupby(['alcaldia','bimestre'])['consumo_total'].mean().reset_index()
+df_mean['codCol'] = [1,2,3,4,5,6,7,8,9,10,
+                     11,12,13,14,15,16,17,18,19,20,
+                     21,22,23,24,25,26,27,28,29,30,
+                     31,32,33,34,35,36,37,38,39,40,
+                     41,42,43,44,45,46,47,48]
+
+X = sm.add_constant(df_mean['codCol'])
+Y = df_mean['consumo_total']
+modelo = sm.OLS(Y, X).fit()
+print(modelo.summary())
+
+# Configuración del plot
+plt.figure(figsize=(10, 6))
+plt.scatter(df_mean['codCol'], df_mean['consumo_total'], label='Promedios por Alcaldia')
+plt.plot(df_mean['codCol'], modelo.predict(X), color='red', label='Pendiente de Regresión')
+plt.xlabel('Alcaldias por Codigo')
+plt.ylabel('Promedio de Consumo Total')
+plt.title('Regresion lineal: Promedio de consumo total por alcaldia para los 3 bimestres')
+plt.legend()
+plt.savefig("LinearRegressionP6/RegresionPorAlcaldiaBimestre.png")
+plt.tight_layout()
+plt.close()
+print(df_mean)  # Revisar esta impresión en consola para ver qué código pertenece a qué alcaldía en qué bimestre
+# Coefciente de correlación Spearman
+predicciones = modelo.predict(sm.add_constant(X))
+spearman, p_valor = spearmanr(predicciones, Y)
+print("Coeficiente de correlación de Spearman:", spearman)
+print("Valor p:", p_valor)
+# Coeficiente de correlación Pearson
+coeficiente_pearson, p_value = pearsonr(predicciones, Y)
+print("Coeficiente de correlación de Pearson:", coeficiente_pearson)
+print("Valor p:", p_value)
+
 
 # Regresión lineal para el consumo total de agua por índice y bimestre clasificados por un código
 df_ind = df.groupby(['bimestre', 'indice_des'])['consumo_total'].mean().reset_index()
