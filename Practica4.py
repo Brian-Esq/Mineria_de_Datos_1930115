@@ -81,6 +81,14 @@ for bim in set(df_BimSumNoDom['bimestre']):
     plt.savefig(f"graficasP4/plotConsumoNoDomBim{bim}.png")
     plt.close()
 
+#Consumo total de agua en el primer semestre de 2019 por alcaldia
+df = pd.read_csv("P2ConsumoAgua2019.csv")
+df_BimTotal = df.groupby(["alcaldia", "bimestre"])[["consumo_total"]].mean()
+df_BimTotal.boxplot(by = 'alcaldia', figsize=(27,18))
+plt.xticks(rotation=90)
+plt.savefig("graficasP4/boxplotConsumoTotalMeanAlcaldia.png")
+plt.close()
+
 # Minería de Datos
 # Brian Esquivel
 # 1930115
