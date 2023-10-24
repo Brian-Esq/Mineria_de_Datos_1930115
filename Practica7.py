@@ -63,6 +63,48 @@ kn = k_nearest_neightbors(
 )
 print(kn)
 
+label_to_number = {label: i for i, label in enumerate(df['indice_des'].unique())}
+number_to_label = {i: label for i, label in enumerate(df['indice_des'].unique())}
+
+scatter_group_by("scatterP7/gruposDom.png", df, "consumo_total_dom", "consumo_total", "indice_des")
+list_t = [
+    (np.array(tuples[0:1]), tuples[2])
+    for tuples in df.itertuples(index=False, name=None)
+]
+kn = k_nearest_neightbors(
+    df[['consumo_total_dom','consumo_total']].to_numpy(),
+    df['indice_des'].to_numpy(),
+    [np.array([100, 150]), np.array([1, 1]), np.array([1, 300]), np.array([80, 40])],
+    5
+)
+print(kn)
+
+scatter_group_by("scatterP7/gruposNoDom.png", df, "consumo_total_no_dom", "consumo_total", "indice_des")
+list_t = [
+    (np.array(tuples[0:1]), tuples[2])
+    for tuples in df.itertuples(index=False, name=None)
+]
+kn = k_nearest_neightbors(
+    df[['consumo_total_no_dom','consumo_total']].to_numpy(),
+    df['indice_des'].to_numpy(),
+    [np.array([100, 150]), np.array([1, 1]), np.array([1, 300]), np.array([80, 40])],
+    5
+)
+print(kn)
+
+scatter_group_by("scatterP7/gruposMixto.png", df, "consumo_total_mixto", "consumo_total", "indice_des")
+list_t = [
+    (np.array(tuples[0:1]), tuples[2])
+    for tuples in df.itertuples(index=False, name=None)
+]
+kn = k_nearest_neightbors(
+    df[['consumo_total_mixto','consumo_total']].to_numpy(),
+    df['indice_des'].to_numpy(),
+    [np.array([100, 150]), np.array([1, 1]), np.array([1, 300]), np.array([80, 40])],
+    5
+)
+print(kn)
+
 # Minería de Datos
 # Brian Esquivel
 # 1930115
