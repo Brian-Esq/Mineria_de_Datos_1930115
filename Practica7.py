@@ -1,35 +1,7 @@
 import pandas as pd
-from tabulate import tabulate
 import matplotlib.pyplot as plt
-from typing import Tuple, Dict, List
+from typing import Tuple, List
 import numpy as np
-from functools import reduce
-from scipy.stats import mode
-
-
-def normalize_distribution(dist: np.array, n: int) -> np.array:
-    b = dist - min(dist) + 0.000001
-    c = (b / np.sum(b)) * n
-    return np.round(c)
-
-
-def create_distribution(mean: float, size: int) -> pd.Series:
-    return normalize_distribution(np.random.standard_normal(size), mean * size)
-
-
-def generate_df(means: List[Tuple[float, float, str]], n: int) -> pd.DataFrame:
-    lists = [
-        (create_distribution(_x, n), create_distribution(_y, n), np.repeat(_l, n))
-        for _x, _y, _l in means
-    ]
-    x = np.array([])
-    y = np.array([])
-    labels = np.array([])
-    for _x, _y, _l in lists:
-        x = np.concatenate((x, _x), axis=None)
-        y = np.concatenate((y, _y))
-        labels = np.concatenate((labels, _l))
-    return pd.DataFrame({"x": x, "y": y, "label": labels})
 
 
 def get_cmap(n, name="hsv"):
@@ -72,23 +44,25 @@ def k_nearest_neightbors(
     return predicted_labels
 
 
-grupos = [(20,20, "grupo1"), (80,40, "grupo2"), (200,200, "grupo3")]
-df = generate_df(grupos, 50)
+df = pd.read_csv("P2ConsumoAgua2019.csv")
+df_mean = df.groupby(['bimestre', 'indice_des'])['consumo_total'].mean().reset_index()
 
-label_to_number = {label: i for i, label in enumerate(df['label'].unique())}
-number_to_label = {i: label for i, label in enumerate(df['label'].unique())}
+label_to_number = {label: i for i, label in enumerate(df_mean['indice_des'].unique())}
+number_to_label = {i: label for i, label in enumerate(df_mean['indice_des'].unique())}
 
-scatter_group_by("scatterP7/grupos.png", df, "x", "y", "label")
+scatter_group_by("scatterP7/grupos.png", df_mean, "consumo_total", "bimestre", "indice_des")
 list_t = [
     (np.array(tuples[0:1]), tuples[2])
-    for tuples in df.itertuples(index=False, name=None)
+    for tuples in df_mean.itertuples(index=False, name=None)
 ]
 kn = k_nearest_neightbors(
-    df[['x','y']].to_numpy(),
-    df['label'].to_numpy(),
+    df_mean[['consumo_total','bimestre']].to_numpy(),
+    df_mean['indice_des'].to_numpy(),
     [np.array([100, 150]), np.array([1, 1]), np.array([1, 300]), np.array([80, 40])],
     5
 )
 print(kn)
 
-
+# Minería de Datos
+# Brian Esquivel
+# 1930115
