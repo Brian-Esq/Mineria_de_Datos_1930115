@@ -37,6 +37,7 @@ coeficiente_pearson, p_value = pearsonr(predicciones, Y)
 print("Coeficiente de correlación de Pearson:", coeficiente_pearson)
 print("Valor p:", p_value)
 
+
 # Regresión lineal para el consumo total de agua por alcaldía y bimestre registrada con un código
 df = pd.read_csv("P2ConsumoAgua2019.csv")
 df_mean = df.groupby(['alcaldia','bimestre'])['consumo_total'].mean().reset_index()
@@ -104,6 +105,91 @@ print("Valor p:", p_valor2)
 coeficiente_pearson2, p_value2 = pearsonr(predicciones2, Y2)
 print("Coeficiente de correlación de Pearson:", coeficiente_pearson2)
 print("Valor p:", p_value2)
+
+
+# Regresión para la relación entre el consumo total y el consumo doméstico
+df = df.dropna()
+X = sm.add_constant(df['consumo_total_dom'])
+Y = df['consumo_total']
+modelo = sm.OLS(Y, X).fit()
+print(modelo.summary())
+
+# Configuración del plot
+plt.figure(figsize=(10, 6))
+plt.scatter(df['consumo_total_dom'], df['consumo_total'], label='Consumo Domestico')
+plt.plot(df['consumo_total_dom'], modelo.predict(X), color='red', label='Pendiente de Regresión')
+plt.xlabel('Consumo Doméstico')
+plt.ylabel('Consumo Total')
+plt.title('Regresion lineal: Consumo total a la que aporta el consumo domestico')
+plt.legend()
+plt.savefig("LinearRegressionP6/RegresionDomestica.png")
+plt.tight_layout()
+plt.close()
+# Coefciente de correlación Spearman
+predicciones = modelo.predict(sm.add_constant(X))
+spearman, p_valor = spearmanr(predicciones, Y)
+print("Coeficiente de correlación de Spearman:", spearman)
+print("Valor p:", p_valor)
+# Coeficiente de correlación Pearson
+coeficiente_pearson, p_value = pearsonr(predicciones, Y)
+print("Coeficiente de correlación de Pearson:", coeficiente_pearson)
+print("Valor p:", p_value)
+
+
+# Regresión para la relación entre el consumo total y el consumo no doméstico
+X = sm.add_constant(df['consumo_total_no_dom'])
+Y = df['consumo_total']
+modelo = sm.OLS(Y, X).fit()
+print(modelo.summary())
+
+# Configuración del plot
+plt.figure(figsize=(10, 6))
+plt.scatter(df['consumo_total_no_dom'], df['consumo_total'], label='Consumo No Domestico')
+plt.plot(df['consumo_total_no_dom'], modelo.predict(X), color='red', label='Pendiente de Regresión')
+plt.xlabel('Consumo No Doméstico')
+plt.ylabel('Consumo Total')
+plt.title('Regresion lineal: Consumo total a la que aporta el consumo no domestico')
+plt.legend()
+plt.savefig("LinearRegressionP6/RegresionNoDomestica.png")
+plt.tight_layout()
+plt.close()
+# Coefciente de correlación Spearman
+predicciones = modelo.predict(sm.add_constant(X))
+spearman, p_valor = spearmanr(predicciones, Y)
+print("Coeficiente de correlación de Spearman:", spearman)
+print("Valor p:", p_valor)
+# Coeficiente de correlación Pearson
+coeficiente_pearson, p_value = pearsonr(predicciones, Y)
+print("Coeficiente de correlación de Pearson:", coeficiente_pearson)
+print("Valor p:", p_value)
+
+
+# Regresión para la relación entre el consumo total y el consumo mixto
+X = sm.add_constant(df['consumo_total_mixto'])
+Y = df['consumo_total']
+modelo = sm.OLS(Y, X).fit()
+print(modelo.summary())
+
+# Configuración del plot
+plt.figure(figsize=(10, 6))
+plt.scatter(df['consumo_total_mixto'], df['consumo_total'], label='Consumo Mixto')
+plt.plot(df['consumo_total_mixto'], modelo.predict(X), color='red', label='Pendiente de Regresión')
+plt.xlabel('Consumo Mixto')
+plt.ylabel('Consumo Total')
+plt.title('Regresion lineal: Consumo total a la que aporta el consumo mixto')
+plt.legend()
+plt.savefig("LinearRegressionP6/RegresionMixta.png")
+plt.tight_layout()
+plt.close()
+# Coefciente de correlación Spearman
+predicciones = modelo.predict(sm.add_constant(X))
+spearman, p_valor = spearmanr(predicciones, Y)
+print("Coeficiente de correlación de Spearman:", spearman)
+print("Valor p:", p_valor)
+# Coeficiente de correlación Pearson
+coeficiente_pearson, p_value = pearsonr(predicciones, Y)
+print("Coeficiente de correlación de Pearson:", coeficiente_pearson)
+print("Valor p:", p_value)
 
 # Minería de Datos
 # Brian Esquivel
