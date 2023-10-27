@@ -51,7 +51,8 @@ kn = k_means(
 print(kn)
 
 
-# Se usa el dataframe donde se va a dejar únicamente el consumo total total y el consumo total, pero los agrupa a todos como si fueran un sólo monto
+# Se usa el dataframe donde se va a dejar únicamente el consumo total total y el consumo total,
+# pero los agrupa a todos como si fueran un sólo monto
 eliminar = ['fecha_referencia','bimestre','consumo_total_mixto','consumo_total_no_dom','indice_des','colonia','alcaldia','latitud','longitud']
 df_con_tot_dom = df.drop(eliminar, axis=1)
 list_t = [
@@ -66,3 +67,6 @@ kn = k_means(
 )
 print(kn)
 
+# Minería de Datos
+# Brian Esquivel
+# 1930115
