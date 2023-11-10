@@ -35,6 +35,7 @@ def k_means(points: List[np.array], k: int, name: str):
 # Comienzo de la lectura del CSV y otro agrupado para obtener el primer scatter
 df = pd.read_csv("P2ConsumoAgua2019.csv")
 # Dataframe que agrupa por bimestre y la descripción del índice
+df = df.dropna()
 df_mean = df.groupby(['bimestre', 'indice_des'])['consumo_total'].mean().reset_index()
 df_mean = df_mean.drop('indice_des', axis=1)
 list_t = [
